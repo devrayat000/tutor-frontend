@@ -51,3 +51,60 @@ export interface ErrorElement {
   message: string;
   name: string;
 }
+
+export interface FeedbackResponse {
+  data: {
+    id: number;
+    attributes: {
+      by: string;
+      comment: string;
+      rating: number;
+    };
+  }[];
+
+  meta: {
+    pagination : {
+      page: number,
+      pageSize: number,
+      pageCount: number,
+      total: number
+    }
+  }
+}
+
+export interface RequestResponse {
+  data: {
+    id: number;
+    attributes: {
+      class: number,
+      subject: JSON,
+      institute: string,
+      message: string,
+      contact: string
+    };
+  }[];
+
+  meta: {
+    pagination : {
+      page: number,
+      pageSize: number,
+      pageCount: number,
+      total: number
+    }
+  }
+}
+
+export interface UserResponse {
+  id: number,
+  username: string,
+  email: string,
+  address: string,
+  subjects: string[],
+  institute: string,
+  gender: string,
+  method: string,
+  phone: string,
+  facebookUrl: string,
+  location: string[]
+}
+
