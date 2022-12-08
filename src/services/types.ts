@@ -3,6 +3,11 @@ export enum Gender {
   FEMALE = "female",
 }
 
+export enum TutionMethod {
+  ONLINE = "online",
+  OFFLINE = "offline",
+}
+
 export interface AuthResponse {
   jwt: string;
   user: User;
@@ -52,59 +57,46 @@ export interface ErrorElement {
   name: string;
 }
 
-export interface FeedbackResponse {
+export interface DataResponse<T> {
   data: {
     id: number;
-    attributes: {
-      by: string;
-      comment: string;
-      rating: number;
-    };
+    attributes: T;
   }[];
 
   meta: {
-    pagination : {
-      page: number,
-      pageSize: number,
-      pageCount: number,
-      total: number
-    }
-  }
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
 }
 
-export interface RequestResponse {
-  data: {
-    id: number;
-    attributes: {
-      class: number,
-      subject: JSON,
-      institute: string,
-      message: string,
-      contact: string
-    };
-  }[];
+export interface Feedback {
+  by: string;
+  comment: string;
+  rating: number;
+}
 
-  meta: {
-    pagination : {
-      page: number,
-      pageSize: number,
-      pageCount: number,
-      total: number
-    }
-  }
+export interface Request {
+  class: number;
+  subject: JSON;
+  institute: string;
+  message: string;
+  contact: string;
 }
 
 export interface UserResponse {
-  id: number,
-  username: string,
-  email: string,
-  address: string,
-  subjects: string[],
-  institute: string,
-  gender: string,
-  method: string,
-  phone: string,
-  facebookUrl: string,
-  location: string[]
+  id: number;
+  username: string;
+  email: string;
+  address: string;
+  subjects: string[];
+  institute: string;
+  gender: string;
+  method: string;
+  phone: string;
+  facebookUrl: string;
+  location: string[];
 }
-
