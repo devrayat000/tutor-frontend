@@ -742,6 +742,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tabler/icons@npm:^1.116.1":
+  version: 1.116.1
+  resolution: "@tabler/icons@npm:1.116.1"
+  peerDependencies:
+    react: ^16.x || 17.x || 18.x
+    react-dom: ^16.x || 17.x || 18.x
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 0e310e2334f69937deb77dab64042dbd16d8f3f6a1e5fb3ee0dac05b01d0260a7ade20297e55b91c6728eb6899a35817e1d471001ebbd2d5d18e6a23e63059c4
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -3584,6 +3599,7 @@ __metadata:
     "@mantine/next": ^5.8.0
     "@mantine/notifications": ^5.8.0
     "@mantine/nprogress": ^5.8.0
+    "@tabler/icons": ^1.116.1
     "@types/node": 18.11.9
     "@types/qs": ^6.9.7
     "@types/react": 18.0.25

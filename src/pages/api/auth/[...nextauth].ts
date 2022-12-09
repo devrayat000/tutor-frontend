@@ -1,5 +1,6 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import login from "../../../services/login";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -11,19 +12,8 @@ export const authOptions: NextAuthOptions = {
         identifier: { type: "email" },
         password: { type: "password" },
       },
-      async authorize(credentials, req) {
-        const resp = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-          }
-        );
-
-        const { user, jwt } = await resp.json();
+      async authorize(credentials) {
+        const { user, jwt } = await login(credentials!);
         return { ...user, name: user.username, jwt };
       },
     }),
@@ -41,8 +31,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }) {
-      const isSignIn = user ? true : false;
-      if (isSignIn) {
+      if (!!user) {
         //   @ts-ignore
         token.id = user.id;
         //   @ts-ignore

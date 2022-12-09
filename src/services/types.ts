@@ -8,14 +8,33 @@ export enum TutionMethod {
   OFFLINE = "offline",
 }
 
+export enum RequestStatus {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  REJECTED = "rejected",
+}
+
 export interface AuthResponse {
   jwt: string;
   user: User;
 }
 
+export interface SingleEntry {
+  entry: string;
+}
+
+export interface Subject {
+  subjects: SingleEntry[];
+}
+
+export interface Location {
+  locations: SingleEntry[];
+}
+
 export interface User {
-  id: number;
+  id: string;
   username: string;
+  uid: string;
   email: string;
   provider: string;
   confirmed: boolean;
@@ -23,13 +42,13 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   address: string;
-  location: string[];
-  subjects: string[];
+  location: SingleEntry[];
+  subjects: SingleEntry[];
   institute: string;
-  gender: string;
+  gender: Gender;
   point: number;
   designation: string;
-  method: string;
+  method: TutionMethod;
   phone: string;
   facebookUrl: string;
   enabled: boolean;
@@ -55,6 +74,15 @@ export interface ErrorElement {
   path: string[];
   message: string;
   name: string;
+}
+
+export interface SingleResponse<T> {
+  data: {
+    id: number;
+    attributes: T;
+  };
+
+  meta: {};
 }
 
 export interface DataResponse<T> {
@@ -85,6 +113,7 @@ export interface Request {
   institute: string;
   message: string;
   contact: string;
+  status: RequestStatus;
 }
 
 export interface UserResponse {
@@ -92,11 +121,11 @@ export interface UserResponse {
   username: string;
   email: string;
   address: string;
-  subjects: string[];
+  subjects: SingleEntry[];
   institute: string;
-  gender: string;
-  method: string;
+  gender: Gender;
+  method: TutionMethod;
   phone: string;
   facebookUrl: string;
-  location: string[];
+  location: SingleEntry[];
 }
