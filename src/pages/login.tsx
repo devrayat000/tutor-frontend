@@ -99,7 +99,7 @@ export default function LoginPage() {
             {...getInputProps("password")}
           />
           <Checkbox label="Keep me logged in" mt="xl" size="md" />
-          <Button fullWidth mt="xl" size="md">
+          <Button type="submit" fullWidth mt="xl" size="md">
             Login
           </Button>
 
@@ -114,3 +114,9 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (ctx: any) => {
+  return {
+    props: {},
+  };
+};

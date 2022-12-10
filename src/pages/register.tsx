@@ -47,6 +47,7 @@ const RegisterPage = () => {
       method: TutionMethod.OFFLINE,
       address: "",
       facebookUrl: "",
+      confirmed: false,
       subjects: [{ entry: "" }],
       locations: [{ entry: "" }],
     },
@@ -292,7 +293,7 @@ const RegisterPage = () => {
             Completed, click back button to get to previous step
             {!!Object.keys(errors).length && (
               <Text c="red" component="p" mb={0} mt="sm">
-                Please fill up the form correctly!
+                Please go back & fill the form correctly!
               </Text>
             )}
           </Stepper.Completed>

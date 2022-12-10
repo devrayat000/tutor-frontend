@@ -7,12 +7,14 @@ import getSubjects from "../../services/subjects";
 export const SubjectSelect = (props: Omit<MultiSelectProps, "data">) => {
   const { data: subjects } = useSWR("subjects", getSubjects, {
     suspense: true,
+    fallback: {},
   });
 
   return (
     <MultiSelect
       data={
-        subjects?.data.attributes.subjects.map((subject) => subject.entry) ?? []
+        subjects?.data.attributes?.subjects?.map((subject) => subject.entry) ??
+        []
       }
       {...props}
     />
@@ -22,12 +24,13 @@ export const SubjectSelect = (props: Omit<MultiSelectProps, "data">) => {
 export const LocationSelect = (props: Omit<MultiSelectProps, "data">) => {
   const { data: locations } = useSWR("locations", getLocations, {
     suspense: true,
+    fallback: {},
   });
 
   return (
     <MultiSelect
       data={
-        locations?.data.attributes.locations.map(
+        locations?.data.attributes?.locations?.map(
           (location) => location.entry
         ) ?? []
       }

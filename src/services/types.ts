@@ -115,17 +115,3 @@ export interface Request {
   contact: string;
   status: RequestStatus;
 }
-
-export interface UserResponse {
-  id: number;
-  username: string;
-  email: string;
-  address: string;
-  subjects: SingleEntry[];
-  institute: string;
-  gender: Gender;
-  method: TutionMethod;
-  phone: string;
-  facebookUrl: string;
-  location: SingleEntry[];
-}

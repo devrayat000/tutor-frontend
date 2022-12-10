@@ -1,11 +1,12 @@
 import qs from "qs";
-import { Gender, TutionMethod, UserResponse } from "./types";
+import { Gender, TutionMethod, User } from "./types";
 
 export default async function getUsers(params?: {
   method?: TutionMethod;
   gender?: Gender;
   institute?: string;
-}): Promise<UserResponse> {
+  uid?: string;
+}): Promise<User[]> {
   const p = qs.stringify(
     {
       filters: {
@@ -17,6 +18,10 @@ export default async function getUsers(params?: {
         },
         institute: {
           $eq: params?.institute,
+        },
+        uid: {
+          $notNull: true,
+          $eq: params?.uid,
         },
       },
     },
