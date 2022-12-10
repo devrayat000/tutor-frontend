@@ -166,6 +166,7 @@ const RegisterPage = () => {
                 name="institute"
                 withAsterisk
                 mt="md"
+                description="Write the full form of your institution."
                 {...getInputProps("institute")}
               />
               <TextInput

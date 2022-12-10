@@ -1,6 +1,7 @@
 import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import Image from "next/image";
 import { IconUserCheck, IconDeviceLaptop } from "@tabler/icons";
+import { useRouter } from "next/router";
 
 import maleAvatar from "../../assets/avatar/male.png";
 import femaleAvatar from "../../assets/avatar/female.png";
@@ -13,42 +14,49 @@ type TutorCardProps = Pick<
 > & {};
 
 const TutorCard = (props: TutorCardProps) => {
+  const router = useRouter();
   return (
-    <Card>
-      <Card.Section component="figure">
+    <Card withBorder shadow="sm" component={Link} href={`/${props.uid}`}>
+      <Card.Section
+        component="figure"
+        sx={{ position: "relative", aspectRatio: "1/1" }}
+      >
         <Image
           src={props.gender === Gender.MALE ? maleAvatar : femaleAvatar}
           alt={`Avatar - ${props.username}`}
+          fill
         />
       </Card.Section>
 
       <Text component="figcaption" size={"lg"} weight={700}>
         {props.username}
       </Text>
-      <Group>
-        <Group grow>
+      <Group noWrap>
+        <Group grow={true} sx={{ flexGrow: 1 }}>
           <Text lineClamp={1}>{props.institute}</Text>
         </Group>
-        <Badge
-          size="lg"
-          radius="sm"
-          leftSection={
-            props.method === TutionMethod.ONLINE ? (
-              <IconDeviceLaptop />
-            ) : (
-              <IconUserCheck />
-            )
-          }
-          color={props.method === TutionMethod.ONLINE ? "teal" : "red"}
-        >
-          {props.method}
-        </Badge>
+        <Group>
+          <Badge
+            size="md"
+            radius="sm"
+            leftSection={
+              props.method === TutionMethod.ONLINE ? (
+                <IconDeviceLaptop size={12} />
+              ) : (
+                <IconUserCheck size={12} />
+              )
+            }
+            color={props.method === TutionMethod.ONLINE ? "teal" : "red"}
+          >
+            {props.method}
+          </Badge>
+        </Group>
       </Group>
       <Button
         fullWidth
         color="grape"
-        component={Link}
-        href={`/${props.uid}/requests/make`}
+        onClick={() => router.push(`/${props.uid}/requests/make`)}
+        mt="sm"
       >
         Request
       </Button>
