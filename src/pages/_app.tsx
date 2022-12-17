@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { DEFAULT_THEME, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { SWRConfig } from "swr";
+import Shell from "../components/common/shell";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -27,7 +28,9 @@ export default function App({ Component, pageProps }: AppProps) {
           withGlobalStyles
         >
           <NotificationsProvider autoClose={2500}>
-            <Component {...pageProps} />
+            <Shell>
+              <Component {...pageProps} />
+            </Shell>
           </NotificationsProvider>
         </MantineProvider>
       </SessionProvider>

@@ -45,7 +45,8 @@ export default async function getUsers(
           },
         },
       },
-      pagination: { page: params?.page },
+      start: params?.page,
+      limit: 30,
     },
     { encodeValuesOnly: true }
   );
@@ -54,4 +55,14 @@ export default async function getUsers(
     throw resp.json();
   }
   return resp.json();
+}
+
+export async function getUsersCount(): Promise<number> {
+  const resp = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/users/count`
+  );
+  if (!resp.ok) {
+    throw resp.json();
+  }
+  return parseInt(await resp.json());
 }

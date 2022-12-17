@@ -1,12 +1,12 @@
-import { Badge, Button, Card, Group, Text } from "@mantine/core";
+import { Badge, Button, Card, Group, Text, Box } from "@mantine/core";
 import Image from "next/image";
 import { IconUserCheck, IconDeviceLaptop } from "@tabler/icons";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import maleAvatar from "../../assets/avatar/male.png";
 import femaleAvatar from "../../assets/avatar/female.png";
 import { Gender, TutionMethod, User } from "../../services/types";
-import Link from "next/link";
 
 type TutorCardProps = Pick<
   User,
@@ -17,16 +17,13 @@ const TutorCard = (props: TutorCardProps) => {
   const router = useRouter();
   return (
     <Card withBorder shadow="sm" component={Link} href={`/${props.uid}`}>
-      <Card.Section
-        component="figure"
-        sx={{ position: "relative", aspectRatio: "1/1" }}
-      >
+      <Box component="figure" sx={{ position: "relative", aspectRatio: "1/1" }}>
         <Image
           src={props.gender === Gender.MALE ? maleAvatar : femaleAvatar}
           alt={`Avatar - ${props.username}`}
           fill
         />
-      </Card.Section>
+      </Box>
 
       <Text component="figcaption" size={"lg"} weight={700}>
         {props.username}

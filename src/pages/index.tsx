@@ -1,176 +1,132 @@
-import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
-import useSWR, { unstable_serialize } from "swr";
 import {
   Container,
   SimpleGrid,
-  Paper,
   Group,
-  Select,
+  Box,
+  BackgroundImage,
+  Stack,
+  Title,
   Text,
-  TextInput,
-  ActionIcon,
-  createStyles,
+  Button,
+  Image,
 } from "@mantine/core";
-import { Suspense } from "react";
-import { IconFilter } from "@tabler/icons";
 
-import getUsers, { filterSchema } from "../services/users";
-import TutorCard from "../components/tutor/card";
-import { useForm, zodResolver } from "@mantine/form";
-import { Gender, TutionMethod } from "../services/types";
-import { BarLoader } from "../components/common/loader";
-import { LocationSelect, SubjectSelect } from "../components/auth/register";
-
-const useStyles = createStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-}));
+import hero_illustration from "../assets/hero_illustration.jpg";
+import study from "../assets/study.jpg";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
-  const { getInputProps, values, setFieldValue, onSubmit } = useForm({
-    initialValues: {
-      method: router.query.method as TutionMethod | undefined,
-      gender: router.query.gender as Gender | undefined,
-      institute: router.query.institute,
-      subjects:
-        typeof router.query.subjects === "string"
-          ? [router.query.subjects]
-          : router.query.subjects,
-      locations:
-        typeof router.query.locations === "string"
-          ? [router.query.locations]
-          : router.query.locations,
-    },
-    validate: zodResolver(filterSchema),
-  });
-  const { data: tutors } = useSWR(["user", router.query], (_, params) =>
-    getUsers(params)
-  );
-  const { classes } = useStyles();
 
   return (
-    <Container size={"sm"}>
-      <Paper
-        withBorder
-        radius="md"
-        p="md"
-        component="form"
-        onSubmit={onSubmit((data) => {
-          for (const key in data) {
-            if (
-              Object.prototype.hasOwnProperty.call(data, key) &&
-              !data[key as keyof typeof data]
-            ) {
-              delete data[key as keyof typeof data];
-            }
-          }
-          router.push({ query: data }, undefined, { shallow: true });
-        })}
-      >
-        <Text weight={700} size="lg">
-          Filter
-        </Text>
+    <Container size={"lg"}>
+      <Box>
+        <BackgroundImage src={hero_illustration.src} px={72} py={96}>
+          <Stack align="start">
+            <Title order={1} maw="20ch">
+              Professional Tutor for Your Children
+            </Title>
+            <Text component="p" maw="52ch">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id rem
+              vel ducimus. Praesentium repellendus suscipit similique ducimus
+              nulla placeat mollitia!
+            </Text>
+            <Button mt="lg" tt="capitalize" component={Link} href="/tutors">
+              Find Your Tutor
+            </Button>
+          </Stack>
+        </BackgroundImage>
+      </Box>
 
-        <TextInput
-          label="Search by Institute"
-          placeholder="Dhaka University"
-          {...getInputProps("institute")}
-        />
-
-        <Group mt="sm">
-          <Group grow className={classes.grow}>
-            <Suspense fallback={<BarLoader />}>
-              <SubjectSelect
-                label="Subjects willing to teach"
-                {...getInputProps("subjects")}
-                value={values.subjects}
-                onChange={(subjects) => setFieldValue("subjects", subjects)}
-                searchable
-                nothingFound="Nothing found"
-                clearable
-                maxDropdownHeight={160}
-                dropdownComponent="div"
-              />
-            </Suspense>
-          </Group>
-
-          <Group grow className={classes.grow}>
-            <Suspense fallback={<BarLoader />}>
-              <LocationSelect
-                label="Locations willing to tutor"
-                {...getInputProps("locations")}
-                value={values.locations}
-                onChange={(locations) => setFieldValue("locations", locations)}
-                searchable
-                nothingFound="Nothing found"
-                clearable
-                maxDropdownHeight={160}
-                dropdownComponent="div"
-              />
-            </Suspense>
-          </Group>
-        </Group>
-
-        <Group mt="sm">
-          <Group grow className={classes.grow}>
-            <Select
-              label="Gender"
-              data={[Gender.MALE, Gender.FEMALE]}
-              {...getInputProps("gender")}
-              value={values.gender}
-              onChange={(gender) =>
-                setFieldValue("gender", (gender as any) || undefined)
+      <Box mt="xl" px={72} py={96}>
+        <Title order={2} align="center">
+          Services We Provide
+        </Title>
+        <SimpleGrid
+          cols={1}
+          breakpoints={[
+            { minWidth: "md", cols: 2 },
+            { minWidth: "lg", cols: 3 },
+          ]}
+          mt="lg"
+          mx={72}
+          spacing="lg"
+        >
+          <Stack p="lg" align={"center"}>
+            <Image
+              width={64}
+              src={
+                "https://vigorous-jepsen-7a0654.netlify.app/static/media/s2.8eb1a595.png"
               }
-              clearable
+              alt="Physics"
             />
-          </Group>
-
-          <Group grow className={classes.grow}>
-            <Select
-              label="Method of teaching"
-              data={[TutionMethod.OFFLINE, TutionMethod.ONLINE]}
-              {...getInputProps("method")}
-              value={values.method}
-              onChange={(method) =>
-                setFieldValue("method", (method as any) || undefined)
+            <Title order={4} align="center">
+              Physics
+            </Title>
+            <Text component="p" size={"sm"} align="center" my={0}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id rem
+              vel ducimus.
+            </Text>
+          </Stack>
+          <Stack p="lg" align={"center"}>
+            <Image
+              width={64}
+              src={
+                "https://vigorous-jepsen-7a0654.netlify.app/static/media/s2.8eb1a595.png"
               }
-              clearable
+              alt="Physics"
             />
-          </Group>
+            <Title order={4} align="center">
+              Physics
+            </Title>
+            <Text component="p" size={"sm"} align="center" my={0}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id rem
+              vel ducimus.
+            </Text>
+          </Stack>
+          <Stack p="lg" align={"center"}>
+            <Image
+              width={64}
+              src={
+                "https://vigorous-jepsen-7a0654.netlify.app/static/media/s1.4c06459a.png"
+              }
+              alt="Chemistry"
+            />
+            <Title order={4} align="center">
+              Chemistry
+            </Title>
+            <Text component="p" size={"sm"} align="center" my={0}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id rem
+              vel ducimus.
+            </Text>
+          </Stack>
+        </SimpleGrid>
+      </Box>
 
-          <ActionIcon
-            variant="filled"
-            color="teal"
-            size={36}
-            sx={{ alignSelf: "end", flexGrow: 0 }}
-            title="Filter"
-            type="submit"
-          >
-            <IconFilter />
-          </ActionIcon>
+      <Box>
+        <Group noWrap spacing={52}>
+          <Image
+            src={study.src}
+            alt="Study"
+            placeholder={<img src={study.blurDataURL} alt="blur" />}
+            width={360}
+          />
+
+          <Box>
+            <Title order={2}>Exceptional Care for your Children</Title>
+            <Text component="p" mt="xl" size={"lg"}>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat
+              voluptatem quo amet, vitae hic similique animi, repudiandae non
+              porro dolorum nihil repellat vel esse nam harum ea totam.
+              Voluptates itaque culpa pariatur molestiae, maiores veritatis
+              eaque tenetur quisquam, numquam repudiandae quos ab corporis, nemo
+              quas rerum dicta explicabo similique! Aperiam tenetur quaerat,
+              ullam labore id ea.
+            </Text>
+          </Box>
         </Group>
-      </Paper>
-
-      <SimpleGrid cols={3} mt="xl">
-        {tutors?.map((tutor) => (
-          <TutorCard key={tutor.id} {...tutor} />
-        ))}
-      </SimpleGrid>
+      </Box>
     </Container>
   );
 }
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const params = filterSchema.parse(ctx.query);
-
-  return {
-    props: {
-      ssr: {
-        [unstable_serialize(["user", params])]: await getUsers(params),
-      },
-    },
-  };
-};

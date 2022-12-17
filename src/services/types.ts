@@ -20,6 +20,7 @@ export interface AuthResponse {
 }
 
 export interface SingleEntry {
+  id: string;
   entry: string;
 }
 
@@ -42,7 +43,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   address: string;
-  location: SingleEntry[];
+  locations: SingleEntry[];
   subjects: SingleEntry[];
   institute: string;
   gender: Gender;
