@@ -1,7 +1,10 @@
 import qs from "qs";
 import { User } from "./types";
 
-export default async function getUserById(uid: string): Promise<User> {
+export default async function getUserById(
+  uid: string,
+  isMe?: boolean
+): Promise<User> {
   const p = qs.stringify(
     {
       filters: {
@@ -9,7 +12,7 @@ export default async function getUserById(uid: string): Promise<User> {
           $eq: uid,
         },
       },
-      populate: ["subjects", "locations"],
+      populate: ["subjects", "locations", isMe ? "requests" : undefined],
     },
     { encodeValuesOnly: true }
   );

@@ -5,9 +5,16 @@ import {
   Group,
   Burger,
   Title,
+  Button,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconLego } from "@tabler/icons";
+import useSWR from "swr";
+import { Suspense } from "react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+
+import getMe from "../../services/me";
 import { AuthLinks, GeneralLinks } from "./links";
 
 const useStyles = createStyles((theme) => ({
@@ -43,11 +50,11 @@ export default function CustomHeader() {
           <IconLego size={28} />
           <Title order={4}>Guru</Title>
         </Group>
+
         {!isMobile && (
-          <Group spacing={"xl"} className={classes.links}>
-            <GeneralLinks />
-            <AuthLinks />
-          </Group>
+          <Suspense>
+            <Links />
+          </Suspense>
         )}
 
         <Burger
@@ -60,3 +67,35 @@ export default function CustomHeader() {
     </Header>
   );
 }
+
+export const Links = () => {
+  const { classes } = useStyles();
+  const { data: session } = useSession();
+  const { data: user } = useSWR(
+    "me",
+    session && (() => getMe((session as any).jwt)),
+    {
+      suspense: true,
+      fallback: {},
+    }
+  );
+
+  if (typeof window !== "undefined") {
+    console.log({ session });
+  }
+
+  return (
+    <Group spacing={"xl"} className={classes.links}>
+      <GeneralLinks />
+      {!user ? (
+        <AuthLinks />
+      ) : (
+        <Group>
+          <Button component={Link} href="/me">
+            Dashboard
+          </Button>
+        </Group>
+      )}
+    </Group>
+  );
+};

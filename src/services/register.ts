@@ -1,25 +1,13 @@
-import { AuthResponse, Gender, TutionMethod } from "./types";
+import { AuthResponse, Gender } from "./types";
 import { z } from "zod";
+import { updateMeSchema } from "./updateMe";
 
 export type RegisterParams = z.infer<typeof registerSchema>;
 
-export const singleEntrySchema = z.object({
-  entry: z.string().min(1, "Required!"),
-});
-
-export const registerSchema = z.object({
-  username: z.string().min(1, "Required!"),
+export const registerSchema = updateMeSchema.extend({
   email: z.string().email(),
   password: z.string().min(8).max(32),
-  phone: z.string().min(1, "Required!"),
   gender: z.nativeEnum(Gender).default(Gender.MALE),
-  institute: z.string().min(1, "Required!"),
-  designation: z.string().min(1, "Required!"),
-  method: z.nativeEnum(TutionMethod).default(TutionMethod.OFFLINE),
-  address: z.string().min(1, "Required!"),
-  facebookUrl: z.string().optional(),
-  subjects: z.array(singleEntrySchema).optional(),
-  locations: z.array(singleEntrySchema).optional(),
 });
 
 export default async function register(

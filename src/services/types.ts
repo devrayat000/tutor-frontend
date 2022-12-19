@@ -53,6 +53,7 @@ export interface User {
   phone: string;
   facebookUrl: string;
   enabled: boolean;
+  requests?: Request[];
 }
 
 export interface ErrorResponse {

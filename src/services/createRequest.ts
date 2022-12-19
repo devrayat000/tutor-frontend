@@ -1,24 +1,29 @@
 import { z } from "zod";
-import { RequestStatus } from "./types";
+import { Request, RequestStatus, SingleResponse } from "./types";
 
 export const createRequestSchema = z.object({
-  class: z.string(),
-  subject: z.string(),
-  institute: z.string(),
-  message: z.string(),
-  contact: z.string(),
+  class: z.string().min(1, "Required!"),
+  subject: z.string().min(1, "Required!"),
+  institute: z.string().min(1, "Required!"),
+  message: z.string().min(1, "Required!"),
+  contact: z.string().min(1, "Required!"),
   status: z.nativeEnum(RequestStatus),
+  user: z.object({
+    uid: z.string(),
+  }),
 });
 
 export type CreateRequestParams = z.infer<typeof createRequestSchema>;
 
-export default async function createRequest(params: CreateRequestParams) {
+export default async function createRequest(
+  data: CreateRequestParams
+): Promise<SingleResponse<Request>> {
   const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({ data }),
   });
   if (!resp.ok) {
     throw resp.json();

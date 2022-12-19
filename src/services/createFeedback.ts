@@ -8,13 +8,13 @@ export const createFeedbackSchema = z.object({
 
 export type CreateFeedbackParams = z.infer<typeof createFeedbackSchema>;
 
-export default async function createFeedback(params: CreateFeedbackParams) {
+export default async function createFeedback(data: CreateFeedbackParams) {
   const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({ data }),
   });
   if (!resp.ok) {
     throw resp.json();
