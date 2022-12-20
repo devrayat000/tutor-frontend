@@ -3,11 +3,10 @@ import {
   Header,
   Container,
   Group,
-  Burger,
   Title,
   Button,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconLego } from "@tabler/icons";
 import useSWR from "swr";
 import { Suspense } from "react";
@@ -16,6 +15,7 @@ import Link from "next/link";
 
 import getMe from "../../services/me";
 import { AuthLinks, GeneralLinks } from "./links";
+import CustomDrawer from "./drawer";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -39,7 +39,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function CustomHeader() {
-  const [opened, { toggle }] = useDisclosure(false);
   const { classes, theme } = useStyles();
   const isMobile = useMediaQuery(theme.fn.smallerThan("sm"));
 
@@ -57,12 +56,7 @@ export default function CustomHeader() {
           </Suspense>
         )}
 
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-        />
+        <CustomDrawer />
       </Container>
     </Header>
   );
@@ -79,10 +73,6 @@ export const Links = () => {
       fallback: {},
     }
   );
-
-  if (typeof window !== "undefined") {
-    console.log({ session });
-  }
 
   return (
     <Group spacing={"xl"} className={classes.links}>
