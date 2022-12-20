@@ -8,9 +8,7 @@ export const createRequestSchema = z.object({
   message: z.string().min(1, "Required!"),
   contact: z.string().min(1, "Required!"),
   status: z.nativeEnum(RequestStatus),
-  user: z.object({
-    uid: z.string(),
-  }),
+  user: z.string().or(z.number()),
 });
 
 export type CreateRequestParams = z.infer<typeof createRequestSchema>;

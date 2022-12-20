@@ -1,14 +1,11 @@
 import type { AppProps } from "next/app";
-import { NextPageContext, NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
 import { DEFAULT_THEME, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { SWRConfig } from "swr";
-import { unstable_getServerSession } from "next-auth";
 
 import Shell from "../components/common/shell";
-import { authOptions } from "./api/auth/[...nextauth]";
-import getMe from "../services/me";
+import { ModalsProvider } from "@mantine/modals";
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -32,32 +29,23 @@ function App({ Component, pageProps }: AppProps) {
           withNormalizeCSS
           withGlobalStyles
         >
-          <NotificationsProvider autoClose={2500}>
-            <Shell>
-              <Component {...pageProps} />
-            </Shell>
-          </NotificationsProvider>
+          <ModalsProvider
+            modalProps={{
+              closeOnEscape: true,
+              closeOnClickOutside: true,
+              withCloseButton: true,
+            }}
+          >
+            <NotificationsProvider autoClose={2500}>
+              <Shell>
+                <Component {...pageProps} />
+              </Shell>
+            </NotificationsProvider>
+          </ModalsProvider>
         </MantineProvider>
       </SessionProvider>
     </SWRConfig>
   );
 }
-
-// App.getInitialProps = async (ctx: NextPageContext) => {
-//   const session = await unstable_getServerSession(
-//     ctx.req as any,
-//     ctx.res as any,
-//     authOptions
-//   );
-
-//   return {
-//     pageProps: {
-//       session,
-//       ssr: {
-//         me: await getMe((session as any)?.jwt),
-//       },
-//     },
-//   };
-// };
 
 export default App;

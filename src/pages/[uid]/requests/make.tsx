@@ -10,15 +10,21 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useRouter } from "next/router";
+import useSWR, { unstable_serialize } from "swr";
+import { showNotification } from "@mantine/notifications";
+import { GetServerSideProps } from "next";
 
 import { DataResponse, Request, RequestStatus } from "../../../services/types";
 import createRequest, {
   createRequestSchema,
 } from "../../../services/createRequest";
-import useSWR from "swr";
+import getUserById from "../../../services/userById";
 
 export default function MakeRequestsPage() {
   const router = useRouter();
+  const { data: user } = useSWR(["user", router.query.uid as string], (_, id) =>
+    getUserById(id)
+  );
   const { mutate, isValidating } = useSWR<DataResponse<Request>>([
     "requests",
     router.query.uid,
@@ -31,22 +37,20 @@ export default function MakeRequestsPage() {
       message: "",
       contact: "",
       status: RequestStatus.PENDING,
-      user: {
-        uid: router.query.uid as string,
-      },
+      user: user?.id!,
     },
     validate: zodResolver(createRequestSchema),
   });
 
   const sendTutorRequest = form.onSubmit(async (data, e) => {
-    await mutate(async (prevData) => {
+    const resp = await mutate(async (prevData) => {
       if (!prevData) {
         return prevData;
       }
       const newReq = await createRequest(data);
       return {
         ...prevData,
-        data: [...prevData?.data, newReq.data],
+        data: [newReq.data, ...prevData?.data],
         meta: {
           ...prevData.meta,
           pagination: {
@@ -57,6 +61,12 @@ export default function MakeRequestsPage() {
       };
     });
     e.currentTarget.reset();
+
+    showNotification({
+      id: String(resp?.data[-1].id),
+      title: "Request for tutor",
+      message: "Your request has been sent. Wait for tutor response.",
+    });
   });
 
   return (
@@ -143,3 +153,14 @@ export default function MakeRequestsPage() {
     </Container>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const uid = ctx.params!.uid as string;
+  return {
+    props: {
+      ssr: {
+        [unstable_serialize(["user", uid])]: await getUserById(uid),
+      },
+    },
+  };
+};
